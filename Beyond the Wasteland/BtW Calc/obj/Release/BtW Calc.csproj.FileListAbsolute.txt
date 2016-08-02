@@ -1,0 +1,11 @@
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\bin\Release\BtW Calc.exe.config
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\bin\Release\BtW Calc.exe.manifest
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\bin\Release\BtW Calc.application
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\bin\Release\BtW Calc.exe
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\bin\Release\BtW Calc.pdb
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\frmMain.resources
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\BtW Calc.csproj.GenerateResource.Cache
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\BtW Calc.exe.manifest
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\BtW Calc.application
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\BtW Calc.exe
+C:\Users\Bill\documents\visual studio 2013\Projects\BtW Calc\BtW Calc\obj\Release\BtW Calc.pdb

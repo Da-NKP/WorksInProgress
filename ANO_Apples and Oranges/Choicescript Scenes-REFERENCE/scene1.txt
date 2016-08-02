@@ -1,0 +1,170 @@
+It was the first day of school. Well, not really the first day, since this day was more like a day camp than a school.
+
+It was a nice day, everything was perfect. Except...
+*page_break
+${charName}, your name! You somehow forgot it! How could a chatty Sophomore girl forget her name? It obviously was not ${charName}.
+
+Anyways, what was it again?
+*choice
+  # River
+    *goto river
+  # Sarah
+    *goto sarah
+  # Tonya
+    *goto tonya
+  # I remember it and it is none of these!
+    *goto choice
+*label river
+Oh, it was? Well, my mistake, then.
+*goto lname
+*label sarah
+*set charName "Sarah"
+*goto lname
+*label tonya
+*set charName "Tonya"
+*goto lname
+*label choice
+Alright, then. If you remember, then tell me what it is.
+*input_text charName
+*goto lname
+*label lname
+Well, I suppose you forgot your last name as well, Miss obviously-not ${lcharName}?
+*choice
+  # It was Williams
+    *goto williams
+  # It was Hertling
+    *goto hertling
+  # It was Song
+    *goto song
+  # It was none of these!
+    *goto choice2
+*label williams
+*set lcharName "Williams"
+*goto story
+*label hertling
+*set lcharName "Hertling"
+*goto story
+*label song
+Really? Well, I guess I will remember that, then.
+*goto story
+*label choice2
+Ok, then, Miss "I know my name." What is it?
+*input_text lcharName
+*goto story
+*label story
+Right, then, Miss ${charName} ${lcharName}, now that we are done with that, we should move on.
+*page_break
+Despite what ${charName} thought, school today was still required. You had to go.
+*page_break
+${charName}, a Sophomore in high school, knew everyone. And, for that matter, everyone knew her. Especially Leon, who was arguably the most popular Senior in the school.
+
+Leon was the top of his class, excelling in Biology, Chemistry, Computer Science, Mathematics, and History. However, he did also master in [i]other[/i] things as well.
+*page_break
+Tom and Frank were normal enough, typical Seniors. Sam and Joe were athletes - [i]Jocks[/i]. Philip was the band guy, the Trumpet his weapon of choice. All the other Seniors were similar enough to not stick out, that is, as much as Seniors could [i]not[/i] stick out.
+*page_break
+That is, all but John. Yes, he did do well enough to not be noticed in class, and he was involved just enough to not be noticed, like some of his classmates. However, ${charName} thought that something was...unusual about John; something that did not seem right. Something was different, to be sure. 
+
+Being a gregarious Sophomore - read: [i]teenage girl[/i] - ${charName} talked to John. 
+*page_break
+He seemed normal enough to you. Something did not sit right with ${charName}, though. 
+
+[i]I guess he is just awkward,[/i] ${charName} thought. 
+
+As much as she tried to accept that explanation, she failed. 
+*page_break 
+Besides, John was not "awkward" by himself, but it was mostly when he was with his classmates that he seemed different, especially with Leon.
+
+She struggled to understand why. Weeks passed.
+
+[i]This is far more important, not to mention much more interesting, than Geometry,[/i] she thought to herself. 
+
+While her teacher moaned on about geometric proofs, ${charName} had bigger things to prove.
+*page_break 
+She was a good enough student academically. Most people really did not care about her grades, which she was OK with.
+
+She needed to know why John was so unusual. Her method was simple: she would find out what all of the Seniors, save John, had in common. It was a bold plan.
+
+What she failed to consider was the time. Since her Geometry class was before noon, she lacked any real focus, and no matter how much ${charName} wanted to know, she seldom made progress.
+*page_break 
+By the time Math was over, and moments before falling asleep at the constant, and almost medical-grade sedative, monotone of the teacher, the bell rang. Up to that point all that she was able to come up with was that the typical Senior was a Senior and could drive.  Unfortunately for her plan, John fit both of those categories. 
+*page_break 
+Well, her plan failed before, but it was now 2pm and ${charName} was in choir. She was awake, ready to go, and now really had nothing better to do. And, what luck, John was in Choir as well with three of his classmates. Now she could really get to work.
+*page_break 
+After trying, and failing, to match the Seniors to various ideas, beliefs, ages, and proficiencies - they were all unique - she settled for just watching John and his classmates.
+
+Suddenly,only after having spent an hour staring at the Seniors, did ${charName} find the pattern she was looking for. All of the Seniors were unique, and they wore that uniqueness about them like a kind of aura. Well, John was unique too, but not in the right way. 
+*page_break 
+John, unlike his classmates, or Leon especially, had no aura. What was there instead could only be described as a kind of [i]social[/i] stale bread.
+
+[i]More like fake, stale bread,[/i] ${charName} thought, [i]or was it more of a "stolen" bread kind of deal?[/i]
+
+Her goal was near...er, and now she was a little hungrier, thanks to her bread analogy. But still, she still heard the Battle victory music from her favorite Final Fantasy game. And while she knew that she had made incredible progress, she still had much more to learn.
+*page_break 
+The bell rang. Her favorite class of the day, the best class of all, was here: Dismissal. And while most would waste it by quickly going home, ${charName} always used it to make up for lost social time during school. It was almost like system, one that could work during the school day, but was best at Dismissal. She could go and talk to anyone, and, if done properly, could learn almost anything she wanted. [i]Who needs Wikipedia, anyways,[/i] she thought.
+
+While she normally just talked aimlessly to various people waiting for their rides to come, she had "a mission from God" today. 
+
+[i]I could have been a blues brother...[/i] she thought, [i]but I think I would like to have more that just toast[/i].
+*page_break 
+She first checked with her classmates. Apparently, John was incredibly low-key, since half had no clue who she was talking about. Half of those who did only barely recognized the name. All but one of those who actually saw him actually talked to him.
+*page_break 
+[i]He is a Senior! How is he this unknown? Maybe Wikileaks has something for people like this?[/i] Her one friend talked to John during lunch. She told all. 
+*page_break 
+It was last year, and she was getting lunch. She went to sit with her friends, but their table was full. 
+
+Actually, all of the tables were full. Except, of course, the one that John was sitting at. With little choice, she decided to join him.
+*page_break 
+How did she introduce herself, again?
+*choice 
+  # How are you today?
+    *goto today
+  # What is your name?
+    *goto name
+*label today
+"...OK." It took a full five seconds for him to answer.
+
+She was determined to get more conversation out of him than that. However, she wanted to sit down more.
+
+"May I join you?"
+*page_break
+*goto sit
+*label name
+"...John." It took a full five seconds for him to answer.
+
+She was determined to get some kind of conversation out of him. But first, she wanted to sit down.
+
+"May I join you?"
+*page_break
+*goto sit
+*label sit
+"...sure." The answer was almost too quiet to hear, although that did not mean much in a room full of talking teenage students.
+
+She took her seat, positioned across and diagonal to John.
+
+In the time all of this took place, nearly half of the lunch period was gone.
+*page_break
+With minutes left, she made one final attempt to start a conversation, this time with something guaranteed to work.
+*choice
+  # Do you have Senioritis?
+    *goto senior
+  # Do you have any tests coming up?
+    *goto tests
+*label senior
+"No." John eventually responded.
+*page_break
+She told ${charName} about the ludicrous answer. Of course he had Senioritis! He was a Senior. She sometimes thought that she had it, too. She told ${charName} as much.
+*goto cont
+*label tests
+"Yes." replied John.
+*page_break
+"Yes." Just "yes." That was stupid; she did not know anyone who would not immediately talk about their schedule when asked like that. She told ${charName} about the pointless answer.
+*goto cont
+*label cont
+Of course, right as she was about to ask her other question, the bell rang, ending both her lunch period and her time with John, who left immediately.
+
+After Susan told ${charName}, ${charName} had to understand John. However, that would have to wait for another day, as she unfortunately needed to go home.
+*finish
+
+
+
+

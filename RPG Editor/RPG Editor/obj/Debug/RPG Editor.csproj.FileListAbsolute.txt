@@ -1,0 +1,8 @@
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\bin\Debug\RPG Editor.exe.config
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\bin\Debug\RPG Editor.exe
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\bin\Debug\RPG Editor.pdb
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\obj\Debug\RPG Editor.csprojResolveAssemblyReference.cache
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\obj\Debug\frmMain.resources
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\obj\Debug\RPG Editor.csproj.GenerateResource.Cache
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\obj\Debug\RPG Editor.exe
+d:\documents\visual studio 2013\Projects\RPG Editor\RPG Editor\obj\Debug\RPG Editor.pdb

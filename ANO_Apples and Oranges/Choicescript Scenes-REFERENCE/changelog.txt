@@ -1,0 +1,19 @@
+*label changelog
+Which version do you want to see the changes made?
+*choice
+  #Version .01
+     Created main introduction
+     *goto changelog
+  #Version .02
+     Added first scene
+     *goto changelog
+  #Version .03
+     Incorporated the "gossip" game mechanic
+     Corrected many typos
+     Rewrote a lot of stuff
+     *goto changelog
+  #Version .04
+     Changed name from Society: A Non-Sequitur Story to Apples and Oranges
+     *goto changelog
+  #Let me play your game.
+     *finish

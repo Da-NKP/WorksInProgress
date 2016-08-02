@@ -1,0 +1,54 @@
+"Hey, John! Wait up!" 
+
+School was finally over. John was looking forward to a quick start of his weekend - that is, until that.
+
+"Oh, hi." John replied, wondering how to make this as short as possible. Mara, his classmate and fellow senior, was not going to make it easy, though. 
+
+*page_break
+"Do you want to go to the party with me?" Mara stepped closer to John as she asked, causing John to fall back into his locker. 
+
+She did not seem to notice, but moved a little closer, to make up for the distance John fell back, and continued. "Our entire class is going and there will be food and games and music and even a movie! It's going to be so much fun!"
+*page_break
+John feared that this would happen. 
+
+[i]I really want to go, especially with Mara. Spending time with classmates would be great! But going with her? I would love to, but what would my classmates think? What would she think if I responded too quickly? Worse still, what would the whole school think?[/i]
+
+[i]What would I say? How would I say it? And why me - why did Mara ask me? "Not sure if romantic or just friendly."[/i]
+John laughed a little before continuing his thought. 
+
+[i]But really, I do not know her that well, and I know she could not possibly know me that well. But what if she thought she knew me? Or am I just over-thinking this?[/i]
+*page_break
+"Well, John? Are you coming or not?"
+*page_break
+His thoughts ran again. 
+
+[i]Oh no! It has been nearly three minutes! Or was it five? Hmm... I am impressed that Mara waited that long for an answer, though. Forget that! I have to give her an answer. She cannot notice this, not now. I can feel my pulse, which means that she can probably tell that something is wrong. She was standing far too close to me; she had to have noticed! I have to answer! NOW![/i]
+*page_break
+Mara started to ask John again, "Hey, is everything alri-"
+
+"I can't go with you!" John half shouted, half cried.
+
+He was frozen for a moment; Mara was stunned.
+*page_break
+[i]Ahh!!! That could have not been a worse response! How is Mara going to take that? What if she takes it personally? I cannot possibly go now. If I did, and I ran into her at the party, what would I say? Would she even ask?[/i]
+*page_break
+"I'm sorry," John stuttered, "but I just can't do this!"
+
+He ran off, leaving a very confused Mara behind, not to mention several other slightly-less confused students who were in ear-shot of his cry.
+*page_break
+Well, do you think this party is really "all that", or just some major case of hype?
+*choice
+  #All That...and more
+    *goto con1
+  #Just Hype, like every high school party 
+    *goto con2
+*label con1
+Mara did not understand any of what happened. She soon left for the party, however, and quickly lost her confusion in, what she decided was, the most amazing party ever!
+
+[i] I knew that this party was going to be awesome, [/i] she thought.
+*finish
+*label con2
+Mara did not understand any of what happened. She soon left for the party, however, and quickly lost her confusion in, what she decided was, the most lame party ever.
+
+[i] I was really hoping this party would be different, [/i] she thought.
+*finish

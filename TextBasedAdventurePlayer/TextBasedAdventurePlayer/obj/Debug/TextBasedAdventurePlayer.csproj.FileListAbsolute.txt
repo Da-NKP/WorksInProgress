@@ -1,0 +1,8 @@
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\bin\Debug\TextBasedAdventurePlayer.exe.config
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\bin\Debug\TextBasedAdventurePlayer.exe
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\bin\Debug\TextBasedAdventurePlayer.pdb
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\obj\Debug\TextBasedAdventurePlayer.csprojResolveAssemblyReference.cache
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\obj\Debug\frmMain.resources
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\obj\Debug\TextBasedAdventurePlayer.csproj.GenerateResource.Cache
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\obj\Debug\TextBasedAdventurePlayer.exe
+d:\documents\visual studio 2013\Projects\TextBasedAdventurePlayer\TextBasedAdventurePlayer\obj\Debug\TextBasedAdventurePlayer.pdb

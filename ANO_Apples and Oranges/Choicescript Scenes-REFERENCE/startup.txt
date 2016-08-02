@@ -1,0 +1,27 @@
+*comment This is the second iteration of part of the game.
+*create charName "River"
+*comment this is for those To The Moon fans out there?
+*create lcharName "Song"
+*comment this is for those Doctor Who fans out there?
+*title Apples and Oranges
+*scene_list
+  startup
+  intro
+  title
+  scene1
+  ending
+This is the First Stage in the Agile Development of Apples and Oranges, ANO for short. (Working title). 
+The purpose of this stage is to create the story, as well as the game plot.
+Given that Choicescript is not built for this kind of game, some of the elements (such as longer narrative and story) can become tiresome.
+The first step will be completed when the story and plot are completely developed, as well as game influence, and when there is feasibility in moving to the next stage and game engine.
+
+This is Alpha-Build .03
+
+What follows is unstable and extremely dangerous
+
+Do you wish to proceed? You do so at your own risk.
+*choice
+  #Yes.
+    *finish
+  #No.
+    *goto_scene ending
