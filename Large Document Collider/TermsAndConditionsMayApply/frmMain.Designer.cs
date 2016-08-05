@@ -13,9 +13,9 @@
             this.mnuSaveAnalysis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuShowTopTen = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuShowTopHundred = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuShowTopThousand = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTopTen = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTopHundred = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTopThousand = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHowTo = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPurpose = new System.Windows.Forms.ToolStripMenuItem();
@@ -33,6 +33,7 @@
             this.btnPrevWord = new System.Windows.Forms.Button();
             this.btnLastWord = new System.Windows.Forms.Button();
             this.btnFirstWord = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,36 +108,36 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuShowTopTen,
-            this.mnuShowTopHundred,
-            this.mnuShowTopThousand});
+            this.mnuTopTen,
+            this.mnuTopHundred,
+            this.mnuTopThousand});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
-            // mnuShowTopTen
+            // mnuTopTen
             // 
-            this.mnuShowTopTen.Enabled = false;
-            this.mnuShowTopTen.Name = "mnuShowTopTen";
-            this.mnuShowTopTen.Size = new System.Drawing.Size(121, 22);
-            this.mnuShowTopTen.Text = "Top 10";
-            this.mnuShowTopTen.Click += new System.EventHandler(this.mnuShowTopTen_Click);
+            this.mnuTopTen.Enabled = false;
+            this.mnuTopTen.Name = "mnuTopTen";
+            this.mnuTopTen.Size = new System.Drawing.Size(152, 22);
+            this.mnuTopTen.Text = "Top 10";
+            this.mnuTopTen.Click += new System.EventHandler(this.mnuShowTopTen_Click);
             // 
-            // mnuShowTopHundred
+            // mnuTopHundred
             // 
-            this.mnuShowTopHundred.Enabled = false;
-            this.mnuShowTopHundred.Name = "mnuShowTopHundred";
-            this.mnuShowTopHundred.Size = new System.Drawing.Size(121, 22);
-            this.mnuShowTopHundred.Text = "Top 100";
-            this.mnuShowTopHundred.Click += new System.EventHandler(this.mnuShowTopHundred_Click);
+            this.mnuTopHundred.Enabled = false;
+            this.mnuTopHundred.Name = "mnuTopHundred";
+            this.mnuTopHundred.Size = new System.Drawing.Size(152, 22);
+            this.mnuTopHundred.Text = "Top 100";
+            this.mnuTopHundred.Click += new System.EventHandler(this.mnuShowTopHundred_Click);
             // 
-            // mnuShowTopThousand
+            // mnuTopThousand
             // 
-            this.mnuShowTopThousand.Enabled = false;
-            this.mnuShowTopThousand.Name = "mnuShowTopThousand";
-            this.mnuShowTopThousand.Size = new System.Drawing.Size(121, 22);
-            this.mnuShowTopThousand.Text = "Top 1000";
-            this.mnuShowTopThousand.Click += new System.EventHandler(this.mnuShowTopThousand_Click);
+            this.mnuTopThousand.Enabled = false;
+            this.mnuTopThousand.Name = "mnuTopThousand";
+            this.mnuTopThousand.Size = new System.Drawing.Size(152, 22);
+            this.mnuTopThousand.Text = "Top 1000";
+            this.mnuTopThousand.Click += new System.EventHandler(this.mnuShowTopThousand_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -300,9 +301,21 @@
             this.btnFirstWord.UseVisualStyleBackColor = true;
             this.btnFirstWord.Click += new System.EventHandler(this.btnFirstWord_Click);
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Enabled = false;
+            this.btnSearch.Location = new System.Drawing.Point(346, 148);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(83, 23);
+            this.btnSearch.TabIndex = 15;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // frmMain
             // 
             this.ClientSize = new System.Drawing.Size(673, 369);
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnFirstWord);
             this.Controls.Add(this.btnLastWord);
             this.Controls.Add(this.btnPrevWord);
@@ -349,9 +362,9 @@
     private System.Windows.Forms.ToolStripMenuItem mnuSaveOriginal;
     private System.Windows.Forms.ToolStripMenuItem mnuSaveAnalysis;
     private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem mnuShowTopTen;
-    private System.Windows.Forms.ToolStripMenuItem mnuShowTopHundred;
-    private System.Windows.Forms.ToolStripMenuItem mnuShowTopThousand;
+    private System.Windows.Forms.ToolStripMenuItem mnuTopTen;
+    private System.Windows.Forms.ToolStripMenuItem mnuTopHundred;
+    private System.Windows.Forms.ToolStripMenuItem mnuTopThousand;
     private System.Windows.Forms.ToolStripMenuItem mnuHowTo;
     private System.Windows.Forms.ToolStripMenuItem mnuPurpose;
     private System.Windows.Forms.ToolStripMenuItem mnuDevelopment;
@@ -361,4 +374,5 @@
     private System.Windows.Forms.Button btnPrevWord;
     private System.Windows.Forms.Button btnLastWord;
     private System.Windows.Forms.Button btnFirstWord;
+    private System.Windows.Forms.Button btnSearch;
 }

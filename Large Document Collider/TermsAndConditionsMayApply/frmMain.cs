@@ -61,7 +61,7 @@ public partial class frmMain : Form
     }
 
     //public Variable Definitions
-    private bool sortNum = true;
+    private bool sortNum = false;
     private bool sortNumLow = false;
     private bool sortNumHigh = true;
     private bool sortWord = false;
@@ -70,8 +70,6 @@ public partial class frmMain : Form
     private bool topTen = false;
     private bool topHundred = false;
     private bool topThousand = false;
-
-    private int nullMax = 50;
 
     string fileName = "";
 
@@ -292,35 +290,31 @@ public partial class frmMain : Form
 
         btnOrderAlphaBeta.Enabled = true;
         btnOrderNum.Enabled = true;
+        btnSearch.Enabled = true;
+        btnAnalyze.Enabled = false;
+        mnuTopTen.Enabled = true;
+        mnuTopHundred.Enabled = true;
+        mnuTopThousand.Enabled = true;
+
+        txtInput.Clear();
     }
 
     private void btnOrderNum_Click(object sender, EventArgs e)
     {
-        if (sortNum)
+        sortNum = true;
+        sortWord = false;
+        sortWordAsc = false;
+        sortWordDesc = false;
+        
+        if (!sortNumHigh)
         {
-            if (sortNumHigh)
-            {
-                sortNumHigh = false;
-                sortNumLow = true;
-            }
-
-            if (sortNumLow)
-            {
-                sortNumHigh = true;
-                sortNumLow = false;
-            }
-        }
-
-        if (sortWord)
-        {
-            sortNum = true;
             sortNumHigh = true;
-            sortWord = false;
-            sortWordDesc = false;
-            sortWordAsc = false;
-            mnuShowTopTen.Enabled = true;
-            mnuShowTopHundred.Enabled = true;
-            mnuShowTopThousand.Enabled = true;
+            sortNumLow = false;
+        }
+        else
+        {
+            sortNumHigh = false;
+            sortNumLow = true;
         }
 
         DisplayOutput();
@@ -328,34 +322,20 @@ public partial class frmMain : Form
 
     private void btnOrderAlphaBeta_Click(object sender, EventArgs e)
     {
-        if (sortWord)
+        sortNum = false;
+        sortWord = true;
+        sortNumHigh = false;
+        sortNumLow = false;
+        
+        if (!sortWordAsc)
         {
-            if (sortWordAsc)
-            {
-                sortWordAsc = false;
-                sortWordDesc = true;
-            }
-
-            if (sortWordDesc)
-            {
-                sortWordAsc = true;
-                sortWordDesc = false;
-            }
-        }
-
-        if (sortNum)
-        {
-            sortWord = true;
             sortWordAsc = true;
-            sortNum = false;
-            sortNumHigh = false;
-            sortNumLow = false;
-            topThousand = false;
-            topHundred = false;
-            topTen = false;
-            mnuShowTopTen.Enabled = false;
-            mnuShowTopHundred.Enabled = false;
-            mnuShowTopThousand.Enabled = false;
+            sortWordDesc = false;
+        }
+        else 
+        {
+            sortWordAsc = false;
+            sortWordDesc = true;
         }
 
         DisplayOutput();
@@ -487,78 +467,29 @@ public partial class frmMain : Form
 
     private void mnuShowTopTen_Click(object sender, EventArgs e)
     {
-        int number = 10;
-        
-        if (!sortNum)
-        {
-            ShowMessage("Please Sort by the number of term instances before summarizing the results.");
-            btnOrderNum.Focus();
-            return;
-        }
-
-        topHundred = false;
         topTen = true;
+        topHundred = false;
         topThousand = false;
 
-        ArrayList tempData = new ArrayList();
-        for (int i = 0; i < number; i++)
-        {
-            tempData.Add(listBoxItems[i]);
-        }
+        DisplayOutput();
     }
 
     private void mnuShowTopHundred_Click(object sender, EventArgs e)
     {
-        int number = 100;
-
-        if (!sortNum)
-        {
-            ShowMessage("Please Sort by the number of term instances before summarizing the results.");
-            btnOrderNum.Focus();
-            return;
-        }
-
-        if (topTen)
-        {
-            listBoxItems = foundTerms;
-        }
-
-        ArrayList tempData = new ArrayList();
-        for (int i = 0; i < number; i++)
-        {
-            tempData.Add(listBoxItems[i]);
-        }
-
-        topHundred = true;
         topTen = false;
+        topHundred = true;
         topThousand = false;
+
+        DisplayOutput();
     }
 
     private void mnuShowTopThousand_Click(object sender, EventArgs e)
     {
-        int number = 1000;
-
-        if (!sortNum)
-        {
-            ShowMessage("Please Sort by the number of term instances before summarizing the results.");
-            btnOrderNum.Focus();
-            return;
-        }
-
-        if (topTen || topHundred)
-        {
-            listBoxItems = foundTerms;
-        }
-
-        ArrayList tempData = new ArrayList();
-        for (int i = 0; i < number; i++)
-        {
-            tempData.Add(listBoxItems[i]);
-        }
-
-        topHundred = false;
         topTen = false;
+        topHundred = false;
         topThousand = true;
+
+        DisplayOutput();
     }
 
     private void mnuHowTo_Click(object sender, EventArgs e)
@@ -813,201 +744,130 @@ public partial class frmMain : Form
 
     private void DisplayOutput()
     {
+        lstBigDataOutput.Items.Clear();
+        
+        ArrayList tempData = new ArrayList();
+
+        foreach (clsFoundTerm item in foundTerms)
+        {
+            tempData.Add(item);
+        }
+
         //Basic Sort Structure
         if (sortNum)
         {
             if (sortNumHigh)
             {
-                for (int i = 0; i < listBoxItems.Count - 2; i++)
+                for (int i = 0; i < tempData.Count - 2; i++)
                 {
-                    for (int n = i + 1; n < listBoxItems.Count - 1; n++)
+                    for (int n = i + 1; n < tempData.Count - 1; n++)
                     {
-                        clsFoundTerm first = (clsFoundTerm)listBoxItems[i];
-                        clsFoundTerm second = (clsFoundTerm)listBoxItems[n];
+                        clsFoundTerm first = (clsFoundTerm)tempData[i];
+                        clsFoundTerm second = (clsFoundTerm)tempData[n];
                         int firstTerm = first.Count;
                         int secondTerm = second.Count;
 
                         if (firstTerm < secondTerm)
                         {
-                            clsFoundTerm temp = first;
-                            first = second;
-                            second = temp;
+                            clsFoundTerm temp = (clsFoundTerm)tempData[i];
+                            tempData[i] = second;
+                            tempData[n] = temp;
                         }
                     }
                 }
 
-                ArrayList tempData = listBoxItems;
-
-                if (topTen)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 10)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (topHundred)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 100)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (topThousand)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 1000)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    //listBoxItems maintains its current form
-                }
             }
-
-            if (sortNumLow)
+            else
             {
-                for (int i = 0; i < listBoxItems.Count - 2; i++)
+                for (int i = 0; i < tempData.Count - 2; i++)
                 {
-                    for (int n = i + 1; n < listBoxItems.Count - 1; n++)
+                    for (int n = i + 1; n < tempData.Count - 1; n++)
                     {
-                        clsFoundTerm first = (clsFoundTerm)listBoxItems[i];
-                        clsFoundTerm second = (clsFoundTerm)listBoxItems[n];
+                        clsFoundTerm first = (clsFoundTerm)tempData[i];
+                        clsFoundTerm second = (clsFoundTerm)tempData[n];
                         int firstTerm = first.Count;
                         int secondTerm = second.Count;
 
                         if (firstTerm > secondTerm)
                         {
-                            clsFoundTerm temp = first;
-                            first = second;
-                            second = temp;
+                            clsFoundTerm temp = (clsFoundTerm)tempData[i];
+                            tempData[i] = second;
+                            tempData[n] = temp;
                         }
                     }
-                }
-
-                ArrayList tempData = listBoxItems;
-
-                if (topTen)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 10)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (topHundred)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 100)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (topThousand)
-                {
-                    listBoxItems.Clear();
-
-                    foreach (clsFoundTerm term in tempData)
-                    {
-                        listBoxItems.Add(term);
-
-                        if (listBoxItems.Count == 1000)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    //listBoxItems maintains its current form
                 }
             }
         }
-
-        if (sortWord)
+        else if (sortWord)
         {
             if (sortWordAsc)
             {
-                for (int i = 0; i < listBoxItems.Count - 2; i++)
+                for (int i = 0; i < tempData.Count - 2; i++)
                 {
-                    for (int n = i + 1; n < listBoxItems.Count - 1; n++)
+                    for (int n = i + 1; n < tempData.Count - 1; n++)
                     {
-                        clsFoundTerm first = (clsFoundTerm)listBoxItems[i];
-                        clsFoundTerm second = (clsFoundTerm)listBoxItems[n];
+                        clsFoundTerm first = (clsFoundTerm)tempData[i];
+                        clsFoundTerm second = (clsFoundTerm)tempData[n];
                         string firstTerm = first.Term;
                         string secondTerm = second.Term;
 
                         if (firstTerm.CompareTo(secondTerm) < 0)
                         {
-                            clsFoundTerm temp = first;
-                            first = second;
-                            second = temp;
+                            clsFoundTerm temp = (clsFoundTerm)tempData[i];
+                            tempData[i] = second;
+                            tempData[n] = temp;
                         }
                     }
                 }
             }
-
-            if (sortWordDesc)
+            else
             {
-                for (int i = 0; i < listBoxItems.Count - 2; i++)
+                for (int i = 0; i < tempData.Count - 2; i++)
                 {
-                    for (int n = i + 1; n < listBoxItems.Count - 1; n++)
+                    for (int n = i + 1; n < tempData.Count - 1; n++)
                     {
-                        clsFoundTerm first = (clsFoundTerm)listBoxItems[i];
-                        clsFoundTerm second = (clsFoundTerm)listBoxItems[n];
+                        clsFoundTerm first = (clsFoundTerm)tempData[i];
+                        clsFoundTerm second = (clsFoundTerm)tempData[n];
                         string firstTerm = first.Term;
                         string secondTerm = second.Term;
 
                         if (firstTerm.CompareTo(secondTerm) > 0)
                         {
-                            clsFoundTerm temp = first;
-                            first = second;
-                            second = temp;
+                            clsFoundTerm temp = (clsFoundTerm)tempData[i];
+                            tempData[i] = second;
+                            tempData[n] = temp;
                         }
                     }
                 }
             }
         }
-        
-        
-        
-        //Basic Print Structure
-        foreach (clsFoundTerm term in listBoxItems)
+        else
         {
-            lstBigDataOutput.Items.Add(term.Term.PadRight(50) + term.Count.ToString().PadLeft(5));
+            //Displays no sort or limit
+        }
+
+        int tNum = foundTerms.Count;
+
+        if (topTen)
+        {
+            tNum = 10;
+        }
+
+        if (topHundred)
+        {
+            tNum = 100;
+        }
+
+        if (topThousand)
+        {
+            tNum = 1000;
+        }
+
+        for (int i = 0; i < tNum; i++)
+        {
+            clsFoundTerm temp = (clsFoundTerm)tempData[i];
+
+            lstBigDataOutput.Items.Add(temp.Term.PadRight(50) + temp.Count.ToString().PadLeft(5));
         }
     }
 
@@ -1049,6 +909,65 @@ public partial class frmMain : Form
     private void btnLastWord_Click(object sender, EventArgs e)
     {
 
+    }
+
+    private void btnSearch_Click(object sender, EventArgs e)
+    {
+        string sTerm = txtInput.Text.Trim();
+        string tempTerms = sTerm;
+        int numItems = 0;
+
+        ArrayList sTerms = new ArrayList();
+        ArrayList fTerms = new ArrayList();
+
+        if (sTerm.IndexOf(' ') == -1)
+        {
+            foreach (clsFoundTerm item in foundTerms)
+            {
+                if (sTerm == item.Term)
+                {
+                    lstWordContext.Items.Add(item.Term + ":" + item.Count);
+                    numItems = item.Count;
+                    break;
+                }
+            }
+            ShowMessage("There were " + numItems.ToString() + " matches.");
+
+            return;
+        }
+
+        while (tempTerms.IndexOf(' ') != -1)
+        {
+            sTerms.Add(tempTerms.Substring(0, tempTerms.IndexOf(' ')));
+            tempTerms = tempTerms.Substring(tempTerms.IndexOf(' ') + 1);
+        }
+
+        sTerms.Add(tempTerms);
+
+        foreach(string term in sTerms)
+        {
+            int cNum = numItems;
+            
+            foreach(clsFoundTerm item in foundTerms)
+            {
+                if (term == item.Term)
+                {
+                    fTerms.Add(item);
+                    numItems += item.Count;
+                    break;
+                }
+            }
+        }
+
+        foreach (clsFoundTerm item in fTerms)
+        {
+            lstWordContext.Items.Add(item.Term + ":" + item.Count);
+        }
+
+        ShowMessage("There were " + numItems.ToString() + " matches.");
+
+        txtInput.Clear();
+        txtInput.Focus();
     }
 
 }
