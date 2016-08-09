@@ -1,0 +1,9 @@
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\bin\Debug\ClassFileBuilder.exe.config
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\bin\Debug\ClassFileBuilder.exe
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\bin\Debug\ClassFileBuilder.pdb
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.csprojResolveAssemblyReference.cache
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.Form1.resources
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.Properties.Resources.resources
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.csproj.GenerateResource.Cache
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.exe
+d:\documents\visual studio 2013\Projects\ClassFileBuilder\ClassFileBuilder\obj\Debug\ClassFileBuilder.pdb
