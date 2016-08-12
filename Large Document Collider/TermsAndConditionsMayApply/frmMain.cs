@@ -2,54 +2,7 @@
 using System.IO;
 using System.Collections;
 using System.Windows.Forms;
-
-/*
- * Bill Hall
- * End User License Agreement: Terms and Conditions May Apply
- * 
- * Description: The program is designed to use Big Data Concepts to run through a EULA to show popular terms and the such...
- * The reason behind such is that EULAs tend to be longer than most people can deal with. Via Big Data Analytics, the program 
- * should make it much easier to go through and understand what you agree to.
- * 
- * Why make this? Well, I saw a documentary, forwhich this Application takes part of its name. It's also summer, so I have
- * nothing better to do, and I'd like to make a smarter way for at least myself to go through EULAs. 
- * 
- * Update: This program will be redone to focus on Word Analysis in any large document, not just EULAs. 
-
-just need a space to think here...
-
-need to normalize terms
-	need to remove possible punctuation
-		comma
-		period
-		question mark
-		etc
-	need to set to lowercase
-
-need to compare items 
-	need to make sure they aren't "common" words
-	need to make sure they are not helper verbs
-	need to keep track of instances
-	need to remove modifiers
-
-need to read input
-	need to support text files
-		need to remove new line characters
-		need to get words
-		need to work around line breaks
-	need to support raw input
-		need to remove new line characters
-
-idea: use infinite while loop inside of a try/catch
-by doing this, I can keep looking for new values inside a text file, even with multiple empty lines
-eventually, the StreamReader will run into an exception, jump out of the while loop into catch, which will then allow the program to resume functioning
- 
- *
- * 
- * 
- * Currently, Application guarenteed to crash on first launch...
- * 
-*/
+using System.Text.RegularExpressions;
 
 public partial class frmMain : Form
 {
@@ -67,376 +20,317 @@ public partial class frmMain : Form
     private bool sortWord = false;
     private bool sortWordAsc = false;
     private bool sortWordDesc = false;
-    private bool topTen = false;
-    private bool topHundred = false;
-    private bool topThousand = false;
 
     string fileName = "";
 
     ArrayList badChars;
     ArrayList foundTerms;
+    ArrayList foundUniqueTerms;
     ArrayList badTerms;
+    ArrayList searchTerms;
     ArrayList listBoxItems;
+    ArrayList sentences;
+    ArrayList paragraphs;
 
     public frmMain()
     {
         InitializeComponent();
     }
 
-    #region Validation
-
-    //******************* Validation Helper Methods by Alka Harriger *********************
-
-    // The ShowMessage helper method displays an error message with a standard title and an OK button.
-    private void ShowMessage(string msg)
-    {
-        MessageBox.Show(msg, "Message from Application", MessageBoxButtons.OK);
-    }
-
-    // The overloaded validateInput helper method handles just the existence check for any data item.
-    private bool validateInput(TextBox txtInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        return true;
-    }
-
-    // The overloaded validateInput helper method handles the existence check for a given string input form object
-    // and assigns the equivalent value to its corresponding variable.
-    private bool validateInput(TextBox txtInput, out string userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = "";
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        userInput = txtInput.Text;
-        return true;
-    }
-
-    // The overloaded validateInput helper methods handle the existence check for a given Boolean input form object
-    // and assigns the equivalent value to its corresponding variable.
-    private bool validateInput(TextBox txtInput, out bool userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = false;
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        userInput = bool.Parse(txtInput.Text);
-        return true;
-    }
-
-    // The overloaded validateInput helper methods handle the existence check, type check, and range check for a given
-    // input form object and assigns the equivalent value to its corresponding variable. (This one handles int data.)
-    private bool validateInput(TextBox txtInput, int min, int max, out int userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = 0;
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        if (int.TryParse(txtInput.Text, out userInput) == false)
-        {
-            ShowMessage("Only numbers are allowed for " + fieldName + ". Please re-enter:");
-            txtInput.Focus();
-            return false;
-        }
-        if (userInput < min || userInput > max)
-        {
-            ShowMessage(fieldName + " must be between " + min.ToString() + " and " + max.ToString());
-            txtInput.Focus();
-            return false;
-        }
-        return true;
-    }
-
-    // The overloaded validateInput helper methods handle the existence check, type check, and range check for a given
-    // input form object and assigns the equivalent value to its corresponding variable. (This one handles double data.)
-    private bool validateInput(TextBox txtInput, double min, double max, out double userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = 0D;
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        if (double.TryParse(txtInput.Text, out userInput) == false)
-        {
-            ShowMessage("Only numbers are allowed for " + fieldName + ". Please re-enter:");
-            txtInput.Focus();
-            return false;
-        }
-        if (userInput < min || userInput > max)
-        {
-            ShowMessage(fieldName + " must be between " + min.ToString() + " and " + max.ToString());
-            txtInput.Focus();
-            return false;
-        }
-        return true;
-    }
-
-    // The overloaded validateInput helper methods handle the existence check, type check, and range check for a given
-    // input form object and assigns the equivalent value to its corresponding variable. (This one handles decimal data.)
-    private bool validateInput(TextBox txtInput, decimal min, decimal max, out decimal userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = 0M;
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a value for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        if (decimal.TryParse(txtInput.Text, out userInput) == false)
-        {
-            ShowMessage("Only numbers are allowed for " + fieldName + ". Please re-enter:");
-            txtInput.Focus();
-            return false;
-        }
-        if (userInput < min || userInput > max)
-        {
-            ShowMessage(fieldName + " must be between " + min.ToString() + " and " + max.ToString());
-            txtInput.Focus();
-            return false;
-        }
-        return true;
-    }
-
-    // The overloaded validateInput helper methods handle the existence check, type check, and range check for a given
-    // input form object and assigns the equivalent value to its corresponding variable. (This one handles DateTime data.)
-    private bool validateInput(TextBox txtInput, DateTime min, DateTime max, out DateTime userInput)
-    {
-        string fieldName;
-        fieldName = txtInput.Name.Substring(3);
-        userInput = DateTime.Parse("01/01/1900");
-        if (txtInput.Text == "")
-        {
-            ShowMessage("Please enter a date in the format mm/dd/yyyy for " + fieldName);
-            txtInput.Focus();
-            return false;
-        }
-        if (DateTime.TryParse(txtInput.Text, out userInput) == false)
-        {
-            ShowMessage("Only dates are allowed for " + fieldName + ". Please re-enter:");
-            txtInput.Focus();
-            return false;
-        }
-        if (userInput < min || userInput > max)
-        {
-            ShowMessage(fieldName + " must be between " + min.ToShortDateString() + " and " + max.ToShortDateString());
-            txtInput.Focus();
-            return false;
-        }
-        return true;
-    }
-
-    #endregion
+    //Buttons
 
     private void btnAnalyze_Click(object sender, EventArgs e)
     {
-        string rawData = "";
+        string rawData = txtInput.Text;
 
-        if (!validateInput(txtInput, out rawData))
+        foundTerms.Clear();
+        foundUniqueTerms.Clear();
+        
+        #region TermLocation
+        sentences = new ArrayList();
+        paragraphs = new ArrayList();
+
+        if (rawData.Trim() == "")
         {
             ShowMessage("Please provide text for user input.");
             txtInput.Focus();
             return;
         }
 
+        string[] p = rawData.Split('\n');
+
+        int sNum = 0;
+        int pNum = 0;
+
+        foreach (string para in p)
+        {
+            paragraphs.Add(para);
+            
+            string[] s = Regex.Split(para, @"(?<=[\.!\?])\s+"); // Courtesy: http://stackoverflow.com/questions/4957226/split-text-into-sentences-in-c-sharp
+
+            foreach (string sent in s)
+            {
+                sentences.Add(sent);
+                
+                string[] rawTerms = sent.Split(' ');
+
+                foreach (string term in rawTerms)
+                {
+                    if (CheckLength(term))
+                    {
+                        string word = RemoveEncapsulation(term);
+                        string tWord = term;
+
+                        while (word != tWord)
+                        {
+                            tWord = word;
+                            word = RemoveEncapsulation(word);
+                        }
+
+                        word = NormalizeTerm(word);
+
+                        if (!CompareTerm(word, sNum, pNum))
+                        {
+                            clsFoundTerm temp = new clsFoundTerm(word,sNum,pNum);
+                            foundUniqueTerms.Add(temp);
+                        }
+                    }
+                }
+
+                sNum++;
+            }
+
+            pNum++;
+        }
+#endregion
+        
+        #region TermCount
         rawData = RemoveNewLineChars(rawData);
 
-        string[] rawTerms = rawData.Split(' ');
+        string[] rawTerm = rawData.Split(' ');
 
-        foreach (string term in rawTerms)
+        foreach (string term in rawTerm)
         {
             if (CheckLength(term))
             {
-                string word = RemoveEncapsulation(NormalizeTerm(RemoveEncapsulation(term))); //This needs to be reviewed
+                string word = RemoveEncapsulation(term);
+                string tWord = term;
+
+                while (word != tWord)
+                {
+                    tWord = word;
+                    word = RemoveEncapsulation(word);
+                }
+
+                word = NormalizeTerm(word);
 
                 if (!CompareTerm(word))
                 {
                     clsFoundTerm temp = new clsFoundTerm(word);
                     foundTerms.Add(temp);
                 }
-            }   
+            }
         }
+        #endregion
 
         listBoxItems = foundTerms;
 
         DisplayOutput();
 
-        btnOrderAlphaBeta.Enabled = true;
-        btnOrderNum.Enabled = true;
         btnSearch.Enabled = true;
+        btnAddTerm.Enabled = true;
+        btnRemoveTerm.Enabled = true;
         btnAnalyze.Enabled = false;
-        mnuTopTen.Enabled = true;
-        mnuTopHundred.Enabled = true;
-        mnuTopThousand.Enabled = true;
 
         txtInput.Clear();
     }
 
-    private void btnOrderNum_Click(object sender, EventArgs e)
-    {
-        sortNum = true;
-        sortWord = false;
-        sortWordAsc = false;
-        sortWordDesc = false;
-        
-        if (!sortNumHigh)
-        {
-            sortNumHigh = true;
-            sortNumLow = false;
-        }
-        else
-        {
-            sortNumHigh = false;
-            sortNumLow = true;
-        }
-
-        DisplayOutput();
-    }
-
-    private void btnOrderAlphaBeta_Click(object sender, EventArgs e)
-    {
-        sortNum = false;
-        sortWord = true;
-        sortNumHigh = false;
-        sortNumLow = false;
-        
-        if (!sortWordAsc)
-        {
-            sortWordAsc = true;
-            sortWordDesc = false;
-        }
-        else 
-        {
-            sortWordAsc = false;
-            sortWordDesc = true;
-        }
-
-        DisplayOutput();
-    }
-
     private void btnWordContext_Click(object sender, EventArgs e)
     {
-        btnWordContext.Enabled = false;
-        
-        #region Comment Methology
-        /*
-         * Split input by '.' but only if the period is followed by a space and a capital letter
-         * Trim the spacing
-         * Decapsulate intelligently - conditional check for beginning and end only, not just existence
-         * Add Period at the end
-         * Split every 'block' by space char
-         * Do normal formatting
-         * Check Existence
-         * Display Relevent Sentence
-         * 
-         * Even more ridiculous...
-         * 
-         * In retrospect, not nearly as ridiculous as I thought...
-         * 
-        */
-        #endregion
-
-        int focusTermIndex = 0;
-
         if (lstBigDataOutput.SelectedIndex == -1)
         {
-            ShowMessage("Please selcet a term to Contextualize.");
+            ShowMessage("Please Select a Term");
             return;
         }
-        else
+        
+        btnWordContext.Enabled = false;
+
+        string word = (string)lstBigDataOutput.Items[lstBigDataOutput.SelectedIndex];
+
+        word = word.Substring(0, word.IndexOf(' '));
+
+        clsFoundTerm sTerm = new clsFoundTerm();
+
+        foreach (clsFoundTerm term in foundTerms)
         {
-            focusTermIndex = lstBigDataOutput.SelectedIndex;
-        }
-
-        clsFoundTerm temp = (clsFoundTerm)listBoxItems[focusTermIndex];
-        string focusTerm = temp.Term;
-
-        string rawInput = txtInput.Text;
-        string[] rawSentenceInput = rawInput.Split('.');
-        ArrayList rawSentences = new ArrayList();
-
-        foreach (string sentence in rawSentenceInput)
-        {
-            string newSentences = RemoveNewLineChars(sentence);
-            
-            rawSentences.Add(newSentences);
-        }
-
-        ArrayList termSentences = new ArrayList();
-
-        for (int i = 1; i < termSentences.Count - 2; i++)
-        {
-            string sentence = (string)termSentences[i];
-
-            if (sentence.IndexOf(focusTerm) != -1)
+            if (term.Term == word)
             {
-                string newSentence = (string)termSentences[i - 1] + "." + sentence + "." + (string)termSentences[i + 1] + ".";
-                termSentences.Add(newSentence);
+                sTerm = term;
+                break;
             }
         }
 
-        foreach (string sentence in termSentences)
+        ArrayList fTerms = new ArrayList();
+
+        foreach (clsFoundTerm term in foundUniqueTerms)
         {
-            lstWordContext.Items.Add(sentence);
+            if (term.Term == sTerm.Term)
+            {
+                fTerms.Add(term);
+            }
         }
 
-        btnWordContext.Enabled = true;
+        foreach (clsFoundTerm term in fTerms)
+        {
+            lstWordContext.Items.Add((string)sentences[term.SentNum]);
+        }
     }
 
-    private void mnuOpen_Click(object sender, EventArgs e)
+    private void btnAddTerm_Click(object sender, EventArgs e)
     {
-        OpenFileDialog ofd;
-
-        //OpenFileDialog.Filter format (all in quotes): fileTypeName (*.fileExt)|*.fileExt|(repeat for all possibilites)|All Files (*.*)|*.*
-        string fileFilter = "Text files (*.txt)|*.txt";
-
-        try
+        bool isListed = false;
+        
+        if (lstBigDataOutput.SelectedIndex == -1)
         {
-            ofd = new OpenFileDialog();
-            ofd.Title = "Select file to open";
-            ofd.Filter = fileFilter;
-            ofd.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+            ShowMessage("Please Select a Term");
+            return;
+        }
 
-            if (ofd.ShowDialog() == DialogResult.OK)
+        string word = (string)lstBigDataOutput.Items[lstBigDataOutput.SelectedIndex];
+
+        word = word.Substring(0, word.IndexOf(' '));
+
+        clsFoundTerm sTerm = new clsFoundTerm();
+
+        foreach (clsFoundTerm term in foundTerms)
+        {
+            if (term.Term == word)
             {
-                fileName = ofd.FileName;
+                sTerm = term;
+                break;
             }
         }
 
-        catch (Exception ex)
+        foreach (string term in searchTerms)
         {
-            ShowMessage("The following load error occured: " + ex.Message);
+            if (sTerm.Term == term)
+            {
+                isListed = true;
+                break;
+            }
         }
 
-        dataLoad();
+        if (!isListed)
+        {
+            searchTerms.Add(sTerm.Term);
+        }
     }
+
+    private void btnRemoveTerm_Click(object sender, EventArgs e)
+    {
+        bool isListed = false;
+        
+        if (lstBigDataOutput.SelectedIndex == -1)
+        {
+            ShowMessage("Please Select a Term");
+            return;
+        }
+
+        string word = (string)lstBigDataOutput.Items[lstBigDataOutput.SelectedIndex];
+
+        word = word.Substring(0, word.IndexOf(' '));
+
+        clsFoundTerm sTerm = new clsFoundTerm();
+
+        foreach (clsFoundTerm term in foundTerms)
+        {
+            if (term.Term == word)
+            {
+                sTerm = term;
+                break;
+            }
+        }
+
+        foreach (string term in badTerms)
+        {
+            if (sTerm.Term == term)
+            {
+                isListed = true;
+                break;
+            }
+        }
+
+        if (!isListed)
+        {
+            badTerms.Add(sTerm.Term);
+        }
+    }
+
+    private void btnSearch_Click(object sender, EventArgs e)
+    {
+        string sTerm = txtInput.Text.Trim();
+        string tempTerms = sTerm;
+        int numItems = 0;
+
+        ArrayList sTerms = new ArrayList();
+        ArrayList fTerms = new ArrayList();
+
+        if (sTerm.IndexOf(' ') == -1)
+        {
+            foreach (clsFoundTerm item in foundTerms)
+            {
+                if (sTerm == item.Term)
+                {
+                    lstWordContext.Items.Add(item.Term + ":" + item.Count);
+                    numItems = item.Count;
+                    break;
+                }
+            }
+            ShowMessage("There were " + numItems.ToString() + " matches.");
+
+            return;
+        }
+
+        while (tempTerms.IndexOf(' ') != -1)
+        {
+            sTerms.Add(tempTerms.Substring(0, tempTerms.IndexOf(' ')));
+            tempTerms = tempTerms.Substring(tempTerms.IndexOf(' ') + 1);
+        }
+
+        sTerms.Add(tempTerms);
+
+        foreach (string term in sTerms)
+        {
+            int cNum = numItems;
+
+            foreach (clsFoundTerm item in foundTerms)
+            {
+                if (term == item.Term)
+                {
+                    fTerms.Add(item);
+                    numItems += item.Count;
+                    break;
+                }
+            }
+        }
+
+        foreach (clsFoundTerm item in fTerms)
+        {
+            lstWordContext.Items.Add(item.Term + ":" + item.Count);
+        }
+
+        ShowMessage("There were " + numItems.ToString() + " matches.");
+
+        txtInput.Clear();
+        txtInput.Focus();
+    }
+
+    //Menus
+
+    private void mnuOpen_Click(object sender, EventArgs e) //ugh Why VisualStudio Why? 
+    {
+        //BadCode Ugh Why?
+    } //ugh Why VisualStudio Why? 
 
     private void mnuSaveDefault_Click(object sender, EventArgs e)
     {
@@ -465,33 +359,6 @@ public partial class frmMain : Form
         Close();
     }
 
-    private void mnuShowTopTen_Click(object sender, EventArgs e)
-    {
-        topTen = true;
-        topHundred = false;
-        topThousand = false;
-
-        DisplayOutput();
-    }
-
-    private void mnuShowTopHundred_Click(object sender, EventArgs e)
-    {
-        topTen = false;
-        topHundred = true;
-        topThousand = false;
-
-        DisplayOutput();
-    }
-
-    private void mnuShowTopThousand_Click(object sender, EventArgs e)
-    {
-        topTen = false;
-        topHundred = false;
-        topThousand = true;
-
-        DisplayOutput();
-    }
-
     private void mnuHowTo_Click(object sender, EventArgs e)
     {
         string lineOne = "The Application first needs some kind of text to analyze. This can either be pasted into the main text box or as a text file by going through 'File' -> 'Open'.";
@@ -505,13 +372,180 @@ public partial class frmMain : Form
 
     private void mnuPurpose_Click(object sender, EventArgs e)
     {
-        ShowMessage("The program is designed to use Big Data Concepts to run through a EULA to show popular terms and the such. The reason behind such is that EULAs tend to be longer than most people can deal with. Via Big Data Analytics, the program should make it much easier to go through and understand what you agree to.");
+        ShowMessage("The program is designed to allow normal people with normal, busy lives to analyze and examine long, complicated documets. This can either be done by sorting terms by count or alphabetically, as well as examining terms based on occurrence with context, such as sentence and paragraph, as well as by allowing the search of individual or multiple terms.");
     }
 
     private void mnuDevelopment_Click(object sender, EventArgs e)
     {
         ShowMessage("Why make this? Well, I saw a documentary, forwhich this Application takes part of its name. It's also summer, so I have nothing better to do, and I'd like to make a smarter way for at least myself to go through EULAs.");
     }
+
+    private void mnuAscending_Click(object sender, EventArgs e)
+    {
+        if (!sortNumHigh)
+        {
+            sortNum = true;
+            sortWord = false;
+            sortWordAsc = false;
+            sortWordDesc = false;
+
+            sortNumHigh = true;
+            sortNumLow = false;
+
+            DisplayOutput();
+        }
+    }
+
+    private void mnuDescending_Click(object sender, EventArgs e)
+    {
+        if (!sortNumLow)
+        {
+            sortNum = true;
+            sortWord = false;
+            sortWordAsc = false;
+            sortWordDesc = false;
+
+            sortNumHigh = false;
+            sortNumLow = true;
+
+            DisplayOutput();
+        }
+    }
+
+    private void mnuAlpha_Click(object sender, EventArgs e)
+    {
+        if (!sortWordDesc)
+        {
+            sortNum = false;
+            sortWord = true;
+            sortNumHigh = false;
+            sortNumLow = false;
+
+            sortWordAsc = false;
+            sortWordDesc = true;
+
+            DisplayOutput();
+        }
+    }
+
+    private void mnuReverse_Click(object sender, EventArgs e)
+    {
+        if (!sortWordAsc)
+        {
+            sortNum = false;
+            sortWord = true;
+            sortNumHigh = false;
+            sortNumLow = false;
+
+            sortWordAsc = true;
+            sortWordDesc = false;
+
+            DisplayOutput();
+        } 
+    }
+
+    private void mnuOpenDocument_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog ofd;
+
+        //OpenFileDialog.Filter format (all in quotes): fileTypeName (*.fileExt)|*.fileExt|(repeat for all possibilites)|All Files (*.*)|*.*
+        string fileFilter = "Text files (*.txt)|*.txt";
+
+        try
+        {
+            ofd = new OpenFileDialog();
+            ofd.Title = "Select file to open";
+            ofd.Filter = fileFilter;
+            ofd.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                fileName = ofd.FileName;
+            }
+        }
+
+        catch (Exception ex)
+        {
+            ShowMessage("The following load error occured: " + ex.Message);
+        }
+
+        dataLoad();
+    }
+
+    private void mnuOpenSearchDict_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog ofd;
+
+        //OpenFileDialog.Filter format (all in quotes): fileTypeName (*.fileExt)|*.fileExt|(repeat for all possibilites)|All Files (*.*)|*.*
+        string fileFilter = "Dictionary files (*.ldcDict)|*.ldcDict";
+
+        try
+        {
+            ofd = new OpenFileDialog();
+            ofd.Title = "Select file to open";
+            ofd.Filter = fileFilter;
+            ofd.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                fileName = ofd.FileName;
+            }
+        }
+
+        catch (Exception ex)
+        {
+            ShowMessage("The following load error occured: " + ex.Message);
+        }
+
+        dictLoad();
+    }
+
+    private void mnuOpenBlacklist_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog ofd;
+
+        //OpenFileDialog.Filter format (all in quotes): fileTypeName (*.fileExt)|*.fileExt|(repeat for all possibilites)|All Files (*.*)|*.*
+        string fileFilter = "Blacklist files (*.ldcBL)|*.ldcBL";
+
+        try
+        {
+            ofd = new OpenFileDialog();
+            ofd.Title = "Select file to open";
+            ofd.Filter = fileFilter;
+            ofd.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                fileName = ofd.FileName;
+            }
+        }
+
+        catch (Exception ex)
+        {
+            ShowMessage("The following load error occured: " + ex.Message);
+        }
+
+        blLoad();
+    }
+
+    private void mnuResetDoc_Click(object sender, EventArgs e)
+    {
+        btnAnalyze.Enabled = true;
+        btnAddTerm.Enabled = false;
+        btnRemoveTerm.Enabled = false;
+        btnSearch.Enabled = false;
+        btnWordContext.Enabled = false;
+        mnuAlpha.Enabled = false;
+        mnuReverse.Enabled = false;
+        mnuAscending.Enabled = false;
+        mnuDescending.Enabled = false;
+
+        lstBigDataOutput.Items.Clear();
+        lstWordContext.Items.Clear();
+        txtInput.Clear();
+    }
+
+    //Functions
 
     private string NormalizeTerm(string term)
     {
@@ -553,12 +587,39 @@ public partial class frmMain : Form
 
         return false;
     }
+    
+    private bool CompareTerm(string term, int sentNum, int paraNum)
+    {
+        foreach (clsFoundTerm found in foundUniqueTerms)
+        {
+            if(found.Term == term && found.SentNum == sentNum && found.ParaNum == paraNum)
+            {
+                return false;
+            }
+            
+            if (found.Term == term)
+            {
+                return true;
+            }
+        }
+
+        foreach (string bad in badTerms)
+        {
+            if (bad == term)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private string RemoveNewLineChars(string text)
     {
         string newLine = Environment.NewLine;
         string[] textDumpOne = text.Split(new string[] { "\r\n", "\n", "\t" }, StringSplitOptions.None); //Code provided online via StackExchange
-        
+
+        text = "";
 
         foreach (string line in textDumpOne)
         {
@@ -644,7 +705,9 @@ public partial class frmMain : Form
         badChars = new ArrayList();
         badTerms = new ArrayList();
         foundTerms = new ArrayList();
+        foundUniqueTerms = new ArrayList();
         listBoxItems = new ArrayList();
+        searchTerms = new ArrayList();
         
         badChars.Add('.');
         badChars.Add(',');
@@ -656,6 +719,12 @@ public partial class frmMain : Form
         badTerms.Add("a");
         badTerms.Add("an");
         badTerms.Add("the");
+
+        searchTerms.Add("policy");
+        searchTerms.Add("own");
+        searchTerms.Add("right");
+        searchTerms.Add("soul");
+        searchTerms.Add("agree");
     }
 
     private void dataSave(string text, string saveType)
@@ -680,7 +749,7 @@ public partial class frmMain : Form
         }
     }
 
-    private void dataLoad()
+    private void dataLoad() //Loads Document
     {
         string rawData = "";
         
@@ -709,6 +778,96 @@ public partial class frmMain : Form
         }
 
         txtInput.Text = rawData;
+    }
+
+    private void dictLoad() //Loads Dictionary
+    {
+        StreamReader SR = null;
+        
+        try
+        {
+            SR = new StreamReader(fileName);
+
+            string input = SR.ReadLine();
+
+            while (input != null)
+            {
+                string temp = input.Trim().ToLower();
+                bool isListed = false;
+                
+                foreach (string term in searchTerms)
+                {
+                    if (temp == term)
+                    {
+                        isListed = true;
+                        break;
+                    }
+                }
+
+                if (!isListed)
+                {
+                    searchTerms.Add(temp);
+                }
+
+                input = SR.ReadLine();
+            }
+        }
+
+        catch (Exception ex)
+        {
+            ShowMessage("There was an error loading Data: " + ex.Message);
+        }
+
+        finally
+        {
+            SR.Close();
+        }
+
+
+    }
+
+    private void blLoad() //Loads Blacklist
+    {
+        StreamReader SR = null;
+
+        try
+        {
+            SR = new StreamReader(fileName);
+
+            string input = SR.ReadLine();
+
+            while (input != null)
+            {
+                string temp = input.Trim().ToLower();
+                bool isListed = false;
+
+                foreach (string term in badTerms)
+                {
+                    if (temp == term)
+                    {
+                        isListed = true;
+                        break;
+                    }
+                }
+
+                if (!isListed)
+                {
+                    badTerms.Add(temp);
+                }
+
+                input = SR.ReadLine();
+            }
+        }
+
+        catch (Exception ex)
+        {
+            ShowMessage("There was an error loading Data: " + ex.Message);
+        }
+
+        finally
+        {
+            SR.Close();
+        }
     }
 
     private string BuildOutput(ListBox lstOutput)
@@ -846,24 +1005,7 @@ public partial class frmMain : Form
             //Displays no sort or limit
         }
 
-        int tNum = foundTerms.Count;
-
-        if (topTen)
-        {
-            tNum = 10;
-        }
-
-        if (topHundred)
-        {
-            tNum = 100;
-        }
-
-        if (topThousand)
-        {
-            tNum = 1000;
-        }
-
-        for (int i = 0; i < tNum; i++)
+        for (int i = 0; i < foundTerms.Count; i++)
         {
             clsFoundTerm temp = (clsFoundTerm)tempData[i];
 
@@ -891,83 +1033,20 @@ public partial class frmMain : Form
         }
     }
 
-    private void btnFirstWord_Click(object sender, EventArgs e)
+    private void ShowMessage(string msg)
     {
-
+        MessageBox.Show(msg, "Large Document Collider", MessageBoxButtons.OK);
     }
 
-    private void btnPrevWord_Click(object sender, EventArgs e)
-    {
+    
 
-    }
+    
 
-    private void btnNextWord_Click(object sender, EventArgs e)
-    {
+    
 
-    }
+    
 
-    private void btnLastWord_Click(object sender, EventArgs e)
-    {
 
-    }
-
-    private void btnSearch_Click(object sender, EventArgs e)
-    {
-        string sTerm = txtInput.Text.Trim();
-        string tempTerms = sTerm;
-        int numItems = 0;
-
-        ArrayList sTerms = new ArrayList();
-        ArrayList fTerms = new ArrayList();
-
-        if (sTerm.IndexOf(' ') == -1)
-        {
-            foreach (clsFoundTerm item in foundTerms)
-            {
-                if (sTerm == item.Term)
-                {
-                    lstWordContext.Items.Add(item.Term + ":" + item.Count);
-                    numItems = item.Count;
-                    break;
-                }
-            }
-            ShowMessage("There were " + numItems.ToString() + " matches.");
-
-            return;
-        }
-
-        while (tempTerms.IndexOf(' ') != -1)
-        {
-            sTerms.Add(tempTerms.Substring(0, tempTerms.IndexOf(' ')));
-            tempTerms = tempTerms.Substring(tempTerms.IndexOf(' ') + 1);
-        }
-
-        sTerms.Add(tempTerms);
-
-        foreach(string term in sTerms)
-        {
-            int cNum = numItems;
-            
-            foreach(clsFoundTerm item in foundTerms)
-            {
-                if (term == item.Term)
-                {
-                    fTerms.Add(item);
-                    numItems += item.Count;
-                    break;
-                }
-            }
-        }
-
-        foreach (clsFoundTerm item in fTerms)
-        {
-            lstWordContext.Items.Add(item.Term + ":" + item.Count);
-        }
-
-        ShowMessage("There were " + numItems.ToString() + " matches.");
-
-        txtInput.Clear();
-        txtInput.Focus();
-    }
+    
 
 }
